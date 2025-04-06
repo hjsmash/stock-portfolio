@@ -1,0 +1,33 @@
+<div class="container mt-4">
+    <h2>My Stock Portfolio</h2>
+  
+    <div class="input-group mb-3">
+      <input [(ngModel)]="symbol" type="text" class="form-control" placeholder="Stock Symbol (e.g. AAPL)">
+      <input [(ngModel)]="quantity" type="number" class="form-control" placeholder="Quantity">
+      <button class="btn btn-primary" (click)="addStock()">Add Stock</button>
+    </div>
+  
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Symbol</th>
+          <th>Quantity</th>
+          <th>Price</th>
+          <th>Total Value</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let stock of stocks">
+          <td>{{ stock.symbol }}</td>
+          <td>{{ stock.quantity }}</td>
+          <td>\${{ stock.price.toFixed(2) }}</td>
+          <td>\${{ (stock.price * stock.quantity).toFixed(2) }}</td>
+          <td>
+            <button class="btn btn-danger btn-sm" (click)="removeStock(stock)">Remove</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
