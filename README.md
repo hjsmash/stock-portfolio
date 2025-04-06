@@ -8,8 +8,8 @@ A full-stack web application to manage and monitor your stock portfolio with **r
 
 ```
 stock-portfolio/
-├── backend-stock-service/     → Spring Boot backend service (Java + H2 DB)
-├── frontend-stock-app/        → Angular 17 frontend (standalone components + Bootstrap)
+├── stock-portfolio-service/     → Spring Boot backend service (Java + H2 DB)
+├── stock-portfolio-ui-app/        → Angular 17 frontend (standalone components + Bootstrap)
 └── README.md
 ```
 
