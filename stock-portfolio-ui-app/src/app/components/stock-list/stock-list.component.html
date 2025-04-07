@@ -1,6 +1,5 @@
 <div class="container mt-4">
   <h2>My Stock Portfolio</h2>
-
   <div class="mb-3 position-relative" style="z-index: 10;">
     <input type="text" class="form-control" placeholder="Enter stock symbol" [(ngModel)]="searchTerm"
       (input)="onSearchSymbol()" autocomplete="off" />
@@ -53,4 +52,5 @@
       </tr>
     </tbody>
   </table>
+  <h3> Total Value: ${{portfolioValue()}}</h3>
 </div>

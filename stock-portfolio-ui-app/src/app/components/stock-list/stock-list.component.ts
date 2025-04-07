@@ -44,6 +44,9 @@ export class StockListComponent {
   loadStocks(): void {
     this.stockService.getAllStocks().subscribe(data => this.stocks = data);
   }
+  portfolioValue(): String{
+    return this.stocks.reduce((acc, stock) => acc + (stock.price * stock.quantity), 0).toFixed(2);
+  }
 
   addStock(): void {
     //TemporaryFix to avoid issues if vantageApi is down
