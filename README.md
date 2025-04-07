@@ -69,21 +69,17 @@ ng serve
 ## 🔐 API Key Setup
 
 1. Get a free API key from [Alpha Vantage](https://www.alphavantage.co/support/#api-key)
-2. Add it in `StockService.java` (backend):
+2. Add it in `application.properties` (backend):
 
-```java
-private final String API_KEY = "your_actual_key_here";
+```
+stock.api.key="your_actual_key_here";
 ```
 
 ---
 
 ## 📁 Future Improvements
 
-- Add user login with portfolio ownership
-- Move to PostgreSQL or MongoDB for persistence
-- Error handling improvements and loading spinners
-- CI/CD pipeline with GitHub Actions
-- Deploy backend (e.g., Render/Railway) & frontend (e.g., Netlify/Vercel)
+
 
 ---
 
