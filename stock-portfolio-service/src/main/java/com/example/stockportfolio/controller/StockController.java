@@ -3,7 +3,9 @@ package com.example.stockportfolio.controller;
 import com.example.stockportfolio.model.Stock;
 import com.example.stockportfolio.service.StockManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -27,5 +29,15 @@ public class StockController {
     @DeleteMapping
     public void removeStock(@RequestParam String symbol, @RequestParam int quantity) {
         stockManagementService.removeStock(symbol, quantity);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> searchSymbol(@RequestParam String keyword) {
+        String apiKey = "<YOUR_API_KEY>";
+        String url = "https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=" + keyword + "&apikey=" + apiKey;
+
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+        return ResponseEntity.ok(response.getBody());
     }
 }

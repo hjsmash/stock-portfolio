@@ -1,33 +1,56 @@
 <div class="container mt-4">
-    <h2>My Stock Portfolio</h2>
-  
-    <div class="input-group mb-3">
-      <input [(ngModel)]="symbol" type="text" class="form-control" placeholder="Stock Symbol (e.g. AAPL)">
-      <input [(ngModel)]="quantity" type="number" class="form-control" placeholder="Quantity">
-      <button class="btn btn-primary" (click)="addStock()">Add Stock</button>
-    </div>
-  
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Symbol</th>
-          <th>Quantity</th>
-          <th>Price</th>
-          <th>Total Value</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let stock of stocks">
-          <td>{{ stock.symbol }}</td>
-          <td>{{ stock.quantity }}</td>
-          <td>\${{ stock.price.toFixed(2) }}</td>
-          <td>\${{ (stock.price * stock.quantity).toFixed(2) }}</td>
-          <td>
-            <button class="btn btn-danger btn-sm" (click)="removeStock(stock)">Remove</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <h2>My Stock Portfolio</h2>
+
+  <div class="mb-3 position-relative" style="z-index: 10;">
+    <input type="text" class="form-control" placeholder="Enter stock symbol" [(ngModel)]="searchTerm"
+      (input)="onSearchSymbol()" autocomplete="off" />
+
+    <ul class="list-group position-absolute w-100" *ngIf="symbolResults.length > 0">
+      <li *ngFor="let match of symbolResults" class="list-group-item list-group-item-action"
+        (click)="selectSymbol(match['1. symbol'])">
+        {{ match['1. symbol'] }} - {{ match['2. name'] }}
+      </li>
+    </ul>
   </div>
-  
+
+  <div class="input-group mb-3">
+    <input [(ngModel)]="quantity" type="number" class="form-control" placeholder="Quantity" />
+    <button class="btn btn-primary" (click)="addStock()"
+    [disabled]="!this.quantity || this.quantity < 0 ||  !this.searchTerm">Add Stock</button>
+  </div>
+
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Symbol</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Total Value</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let stock of stocks">
+        <td>{{ stock.symbol }}</td>
+        <td>{{ stock.quantity }}</td>
+        <td>${{ stock.price.toFixed(2) }}</td>
+        <td>${{ (stock.price * stock.quantity).toFixed(2) }}</td>
+        <td>
+          <div class="input-group">
+            <input type="number" class="form-control" [(ngModel)]="stock.changeQuantity" placeholder="Quantity"
+              min="1" />
+            <button class="btn btn-outline-success" (click)="addStockQuantity(stock)"
+              [disabled]="!stock.changeQuantity">
+              Add
+            </button>
+            <button class="btn btn-outline-danger" (click)="removeStock(stock)"
+              [disabled]="!stock.changeQuantity || stock.changeQuantity > stock.quantity">
+              Remove
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

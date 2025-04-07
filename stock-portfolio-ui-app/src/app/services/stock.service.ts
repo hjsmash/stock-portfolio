@@ -22,4 +22,7 @@ export class StockService {
   removeStock(symbol: string, quantity: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}?symbol=${symbol}&quantity=${quantity}`);
   }
+  searchSymbol(keyword: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/search?keyword=${keyword}`);
+  }
 }

@@ -27,7 +27,9 @@ public class StockPriceService {
             if (quoteData != null && quoteData.containsKey("05. price")) {
                 return Double.parseDouble(quoteData.get("05. price"));
             } else {
-                throw new RuntimeException("Stock price not found");
+                //TODO use the exception handling correctly
+                //throw new RuntimeException("Stock price not found");
+                return 0.0;
             }
         } catch (Exception e) {
             throw new RuntimeException("Error fetching stock price: " + e.getMessage());
