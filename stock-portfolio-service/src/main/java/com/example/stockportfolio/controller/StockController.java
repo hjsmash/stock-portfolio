@@ -2,10 +2,10 @@ package com.example.stockportfolio.controller;
 
 import com.example.stockportfolio.model.Stock;
 import com.example.stockportfolio.service.StockManagementService;
+import com.example.stockportfolio.service.StockVantageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -14,6 +14,8 @@ import java.util.List;
 public class StockController {
     @Autowired
     private StockManagementService stockManagementService;
+    @Autowired
+    private StockVantageService stockVantageService;
 
     @PostMapping
     public Stock addOrUpdateStock(@RequestParam String symbol, @RequestParam int quantity) {
@@ -33,11 +35,6 @@ public class StockController {
 
     @GetMapping("/search")
     public ResponseEntity<?> searchSymbol(@RequestParam String keyword) {
-        String apiKey = "<YOUR_API_KEY>";
-        String url = "https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=" + keyword + "&apikey=" + apiKey;
-
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
-        return ResponseEntity.ok(response.getBody());
+        return stockVantageService.searchSymbol(keyword);
     }
 }

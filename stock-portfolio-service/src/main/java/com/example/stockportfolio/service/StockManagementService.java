@@ -13,7 +13,7 @@ public class StockManagementService {
     @Autowired
     private StockRepository stockRepository;
     @Autowired
-    private StockPriceService stockPriceService;
+    private StockVantageService stockVantageService;
 
     public Stock addOrUpdateStock(String symbol, int quantity) {
         Optional<Stock> existingStock = stockRepository.findBySymbol(symbol);
@@ -35,7 +35,7 @@ public class StockManagementService {
 
         // Fetch live price for each stock
         stocks.forEach(stock -> {
-            double price = stockPriceService.getStockPrice(stock.getSymbol());
+            double price = stockVantageService.getStockPrice(stock.getSymbol());
             stock.setPrice(price);
         });
 
