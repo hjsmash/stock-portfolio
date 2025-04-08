@@ -1,5 +1,7 @@
 package com.example.stockportfolio.service;
 
+import com.example.stockportfolio.exception.InvalidStockRemovalException;
+import com.example.stockportfolio.exception.StockNotFoundException;
 import com.example.stockportfolio.model.Stock;
 import com.example.stockportfolio.repository.StockRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +35,6 @@ public class StockManagementService {
     public List<Stock> getAllStocks() {
         List<Stock> stocks = stockRepository.findAll();
 
-        // Fetch live price for each stock
         stocks.forEach(stock -> {
             double price = stockVantageService.getStockPrice(stock.getSymbol());
             stock.setPrice(price);
@@ -43,25 +44,26 @@ public class StockManagementService {
     }
 
 
-    public void removeStock(String symbol, int quantity) {
+    public Stock removeStock(String symbol, int removalQuantity) {
         Optional<Stock> existingStock = stockRepository.findBySymbol(symbol);
 
         if (existingStock.isPresent()) {
             Stock stock = existingStock.get();
 
-            if (stock.getQuantity() < quantity) {
-                throw new IllegalArgumentException("Cannot remove more stocks than available. Current quantity: " + stock.getQuantity());
+            if (stock.getQuantity() < removalQuantity) {
+                throw new InvalidStockRemovalException(symbol, stock.getQuantity(), removalQuantity);
             }
 
-            stock.setQuantity(stock.getQuantity() - quantity);
+            stock.setQuantity(stock.getQuantity() - removalQuantity);
 
             if (stock.getQuantity() == 0) {
                 stockRepository.delete(stock);
             } else {
                 stockRepository.save(stock);
             }
+            return stock;
         } else {
-            throw new IllegalArgumentException("Stock with symbol " + symbol + " not found.");
+            throw new StockNotFoundException("Stock with symbol '" + symbol + "' not found in portfolio.");
         }
     }
 }

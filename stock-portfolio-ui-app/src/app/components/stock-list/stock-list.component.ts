@@ -42,14 +42,19 @@ export class StockListComponent {
   }
 
   loadStocks(): void {
-    this.stockService.getAllStocks().subscribe(data => this.stocks = data);
+    this.stockService.getAllStocks().subscribe((response: any) => {
+      this.stocks = response.data.map((stock: any) => ({
+        ...stock,
+        changeQuantity: undefined
+      }));
+    });
   }
   portfolioValue(): String{
     return this.stocks.reduce((acc, stock) => acc + (stock.price * stock.quantity), 0).toFixed(2);
   }
 
   addStock(): void {
-    //TemporaryFix to avoid issues if vantageApi is down
+    //TODO TemporaryFix to avoid issues if vantageApi is down
     if ((this.symbol || this.searchTerm) && this.quantity && this.quantity>0) {
       if (!this.symbol)
         this.symbol = this.searchTerm

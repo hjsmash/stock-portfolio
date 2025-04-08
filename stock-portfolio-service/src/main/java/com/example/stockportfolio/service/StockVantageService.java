@@ -1,5 +1,6 @@
 package com.example.stockportfolio.service;
 
+import com.example.stockportfolio.exception.StockNotFoundException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -29,8 +30,7 @@ public class StockVantageService {
             if (quoteData != null && quoteData.containsKey("05. price")) {
                 return Double.parseDouble(quoteData.get("05. price"));
             } else {
-                //TODO use the exception handling correctly
-                throw new RuntimeException("Stock price not found");
+                throw new StockNotFoundException("Stock price for symbol '" + symbol + "' not found");
                 //return 1.25;
             }
         } catch (Exception e) {

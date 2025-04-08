@@ -1,5 +1,6 @@
 package com.example.stockportfolio.controller;
 
+import com.example.stockportfolio.dto.ApiResponse;
 import com.example.stockportfolio.model.Stock;
 import com.example.stockportfolio.service.StockManagementService;
 import com.example.stockportfolio.service.StockVantageService;
@@ -18,19 +19,22 @@ public class StockController {
     private StockVantageService stockVantageService;
 
     @PostMapping
-    public Stock addOrUpdateStock(@RequestParam String symbol, @RequestParam int quantity) {
-        return stockManagementService.addOrUpdateStock(symbol, quantity);
+    public ResponseEntity<ApiResponse<Stock>> addOrUpdateStock(@RequestParam String symbol, @RequestParam int quantity) {
+        Stock stock = stockManagementService.addOrUpdateStock(symbol, quantity);
+        return ResponseEntity.ok(ApiResponse.success("Stock added successfully", stock));
     }
 
 
     @GetMapping
-    public List<Stock> getAllStocks() {
-        return stockManagementService.getAllStocks();
+    public ResponseEntity<ApiResponse<List<Stock>>> getAllStocks() {
+        List<Stock> stocks = stockManagementService.getAllStocks();
+        return ResponseEntity.ok(ApiResponse.success("Portfolio fetched successfully", stocks));
     }
 
     @DeleteMapping
-    public void removeStock(@RequestParam String symbol, @RequestParam int quantity) {
-        stockManagementService.removeStock(symbol, quantity);
+    public ResponseEntity<ApiResponse<?>> removeStock(@RequestParam String symbol, @RequestParam int quantity) {
+        Stock stock = stockManagementService.removeStock(symbol, quantity);
+        return ResponseEntity.ok(ApiResponse.success("Stock removed successfully", stock));
     }
 
     @GetMapping("/search")
