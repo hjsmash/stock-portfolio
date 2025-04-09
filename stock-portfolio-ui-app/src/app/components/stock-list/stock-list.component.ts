@@ -54,10 +54,7 @@ export class StockListComponent {
   }
 
   addStock(): void {
-    //TODO TemporaryFix to avoid issues if vantageApi is down
-    if ((this.symbol || this.searchTerm) && this.quantity && this.quantity>0) {
-      if (!this.symbol)
-        this.symbol = this.searchTerm
+    if (this.symbol && this.quantity && this.quantity>0) {
       this.stockService.addStock(this.symbol, this.quantity).subscribe(() => {
         this.symbol = '';
         this.searchTerm = '';
