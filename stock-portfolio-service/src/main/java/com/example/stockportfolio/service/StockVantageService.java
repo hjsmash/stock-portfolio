@@ -1,7 +1,6 @@
 package com.example.stockportfolio.service;
 
 import com.example.stockportfolio.dto.SymbolSearchResult;
-import com.example.stockportfolio.exception.StockNotFoundException;
 import com.example.stockportfolio.exception.VantageApiException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,9 +37,9 @@ public class StockVantageService {
             if (quoteData != null && quoteData.containsKey("05. price")) {
                 return Double.parseDouble(quoteData.get("05. price"));
             } else {
-                throw new StockNotFoundException("Stock price for symbol '" + symbol + "' not found");
+                throw new VantageApiException("Stock price for symbol '" + symbol + "' not found");
             }
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new VantageApiException(e.getMessage());
         }
     }
@@ -71,7 +70,7 @@ public class StockVantageService {
                     resultList.add(new SymbolSearchResult(symbol, name));
                 }
             }
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new VantageApiException(e.getMessage());
         }
         return resultList;
