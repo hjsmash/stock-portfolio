@@ -3,6 +3,8 @@ package com.example.stockportfolio.service;
 import com.example.stockportfolio.dto.SymbolSearchResult;
 import com.example.stockportfolio.exception.StockNotFoundException;
 import com.example.stockportfolio.exception.VantageApiException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -23,9 +25,11 @@ public class StockVantageService {
 
     @Autowired
     private WebClient.Builder webClientBuilder;
+    private static final Logger logger = LoggerFactory.getLogger(StockVantageService.class);
 
     public double getStockPrice(String symbol) {
         String url = apiUrl + "?function=GLOBAL_QUOTE&symbol=" + symbol + "&apikey=" + apiKey;
+        logger.info("Calling Alpha Vantage for stock price for symbol: {}", symbol);
         try {
             Map response = webClientBuilder.build().get().uri(url).retrieve().bodyToMono(Map.class).block();
 
@@ -44,6 +48,7 @@ public class StockVantageService {
 
     public List<SymbolSearchResult> searchSymbol(String keyword) {
         String url = apiUrl + "?function=SYMBOL_SEARCH&keywords=" + keyword + "&apikey=" + apiKey;
+        logger.info("Calling Alpha Vantage for symbol search: {}", keyword);
         List<SymbolSearchResult> resultList = new ArrayList<>();
         try {
             Map response = webClientBuilder.build()

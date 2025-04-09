@@ -4,6 +4,8 @@ import com.example.stockportfolio.exception.InvalidStockRemovalException;
 import com.example.stockportfolio.exception.StockNotFoundException;
 import com.example.stockportfolio.model.Stock;
 import com.example.stockportfolio.repository.StockRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +18,11 @@ public class StockManagementService {
     private StockRepository stockRepository;
     @Autowired
     private StockVantageService stockVantageService;
+    private static final Logger logger = LoggerFactory.getLogger(StockManagementService.class);
+
 
     public Stock addOrUpdateStock(String symbol, int quantity) {
+        logger.info("Adding {} units of symbol '{}'", quantity, symbol);
         Optional<Stock> existingStock = stockRepository.findBySymbol(symbol);
 
         if (existingStock.isPresent()) {
@@ -33,6 +38,7 @@ public class StockManagementService {
     }
 
     public List<Stock> getAllStocks() {
+        logger.info("Fetching all stocks from repository...");
         List<Stock> stocks = stockRepository.findAll();
 
         stocks.forEach(stock -> {
@@ -45,6 +51,7 @@ public class StockManagementService {
 
 
     public Stock removeStock(String symbol, int removalQuantity) {
+        logger.info("Removing {} units of symbol '{}'", removalQuantity, symbol);
         Optional<Stock> existingStock = stockRepository.findBySymbol(symbol);
 
         if (existingStock.isPresent()) {

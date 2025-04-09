@@ -32,6 +32,15 @@ public class SPMExceptionHandler {
         return new ResponseEntity<>(ApiResponse.error("Stock not removed", errorDetails), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(VantageApiException.class)
+    public ResponseEntity<ApiResponse<?>> handleVantageApiException(VantageApiException ex) {
+        Map<String, Object> errorDetails = new HashMap<>();
+        errorDetails.put("type", "VantageApiException");
+        errorDetails.put("details", ex.getMessage());
+
+        return new ResponseEntity<>(ApiResponse.error("Technical Error from Vantage API", errorDetails), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     // Handle invalid input or validation exceptions
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<?>> handleValidationError(MethodArgumentNotValidException ex) {
