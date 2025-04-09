@@ -1,33 +1,24 @@
 <div class="container mt-4">
   <h2 class="mb-3">My Stock Portfolio</h2>
-  
+
   <!-- Search Box -->
   <div class="row mb-3">
     <div class="col-md-8 position-relative" style="z-index: 10;">
-      <input type="text" class="form-control" 
-             placeholder="Enter stock symbol" 
-             [(ngModel)]="searchTerm"
-             (input)="onSearchSymbol()" 
-             autocomplete="off">
-      
+      <input type="text" class="form-control" placeholder="Enter stock symbol" [(ngModel)]="searchTerm"
+        (input)="onSearchSymbol()" autocomplete="off">
+
       <ul class="list-group position-absolute w-100" *ngIf="symbolResults.length > 0">
-        <li *ngFor="let match of symbolResults" 
-            class="list-group-item list-group-item-action"
-            (click)="selectSymbol(match['1. symbol'])">
-          {{ match['1. symbol'] }} - {{ match['2. name'] }}
+        <li *ngFor="let match of symbolResults" class="list-group-item list-group-item-action"
+          (click)="selectSymbol(match.symbol)">
+          {{ match.symbol }} - {{ match.name }}
         </li>
       </ul>
     </div>
-    
+
     <div class="col-md-4 mt-2 mt-md-0">
       <div class="input-group">
-        <input [(ngModel)]="quantity" 
-               type="number" 
-               class="form-control" 
-               placeholder="Quantity">
-        <button class="btn btn-primary" 
-                (click)="addStock()"
-                [disabled]="!quantity || quantity < 0 || !searchTerm">
+        <input [(ngModel)]="quantity" type="number" class="form-control" placeholder="Quantity">
+        <button class="btn btn-primary" (click)="addStock()" [disabled]="!quantity || quantity < 0 || !searchTerm">
           Add Stock
         </button>
       </div>
@@ -43,7 +34,7 @@
           <th class="text-center">Qty</th>
           <th class="text-center">Price</th>
           <th class="text-center">Value</th>
-          <th class="text-end">Actions</th> 
+          <th class="text-end">Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -54,20 +45,14 @@
           <td class="text-center fw-bold">${{ (stock.price * stock.quantity).toFixed(2) }}</td>
           <td class="text-end">
             <div class="d-flex justify-content-end gap-1">
-              <input type="number" 
-                     class="form-control form-control-sm" 
-                     [(ngModel)]="stock.changeQuantity" 
-                     placeholder="Qty"
-                     min="1"
-                     style="width: 60px;">
-              <button class="btn btn-sm btn-outline-success flex-shrink-0" 
-                      (click)="addStockQuantity(stock)"
-                      [disabled]="!stock.changeQuantity">
+              <input type="number" class="form-control form-control-sm" [(ngModel)]="stock.changeQuantity"
+                placeholder="Qty" min="1" style="width: 60px;">
+              <button class="btn btn-sm btn-outline-success flex-shrink-0" (click)="addStockQuantity(stock)"
+                [disabled]="!stock.changeQuantity">
                 +
               </button>
-              <button class="btn btn-sm btn-outline-danger flex-shrink-0" 
-                      (click)="removeStock(stock)"
-                      [disabled]="!stock.changeQuantity || stock.changeQuantity > stock.quantity">
+              <button class="btn btn-sm btn-outline-danger flex-shrink-0" (click)="removeStock(stock)"
+                [disabled]="!stock.changeQuantity || stock.changeQuantity > stock.quantity">
                 -
               </button>
             </div>

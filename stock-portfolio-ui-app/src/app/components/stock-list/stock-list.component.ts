@@ -19,16 +19,16 @@ export class StockListComponent {
   symbolResults: any[] = [];
 
   onSearchSymbol(): void {
-    //TODO update this length condition to 3 for using vantage API
-    if (this.searchTerm.length < 30) {
+    if (this.searchTerm.length < 3) {
       this.symbolResults = [];
       return;
     }
-
-    this.stockService.searchSymbol(this.searchTerm).subscribe((data: any) => {
-      this.symbolResults = data['bestMatches'] || [];
+  
+    this.stockService.searchSymbol(this.searchTerm).subscribe((response: any) => {
+      this.symbolResults = response.data || [];
     });
   }
+  
 
   selectSymbol(searchTerm: string): void {
     this.symbol = searchTerm;
